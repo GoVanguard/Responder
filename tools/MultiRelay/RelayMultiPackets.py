@@ -42,106 +42,106 @@ def HTTPCurrentDate():
 
 #407 section.
 class WPAD_Auth_407_Ans(Packet):
-	fields = OrderedDict([
-		("Code",          "HTTP/1.1 407 Unauthorized\r\n"),
-		("ServerType",    "Server: Microsoft-IIS/7.5\r\n"),
-		("Date",          "Date: "+HTTPCurrentDate()+"\r\n"),
-		("Type",          "Content-Type: text/html\r\n"),
-		("WWW-Auth",      "Proxy-Authenticate: NTLM\r\n"),
-		("Connection",    "Proxy-Connection: close\r\n"),
-		("Cache-Control",    "Cache-Control: no-cache\r\n"),
-		("Pragma",        "Pragma: no-cache\r\n"),
-		("Proxy-Support", "Proxy-Support: Session-Based-Authentication\r\n"),
-		("Len",           "Content-Length: 0\r\n"),
-		("CRLF",          "\r\n"),
-	])
+    fields = OrderedDict([
+        ("Code",          "HTTP/1.1 407 Unauthorized\r\n"),
+        ("ServerType",    "Server: Microsoft-IIS/7.5\r\n"),
+        ("Date",          "Date: "+HTTPCurrentDate()+"\r\n"),
+        ("Type",          "Content-Type: text/html\r\n"),
+        ("WWW-Auth",      "Proxy-Authenticate: NTLM\r\n"),
+        ("Connection",    "Proxy-Connection: close\r\n"),
+        ("Cache-Control",    "Cache-Control: no-cache\r\n"),
+        ("Pragma",        "Pragma: no-cache\r\n"),
+        ("Proxy-Support", "Proxy-Support: Session-Based-Authentication\r\n"),
+        ("Len",           "Content-Length: 0\r\n"),
+        ("CRLF",          "\r\n"),
+    ])
 
 
 class WPAD_NTLM_Challenge_Ans(Packet):
-	fields = OrderedDict([
-		("Code",          "HTTP/1.1 407 Unauthorized\r\n"),
-		("ServerType",    "Server: Microsoft-IIS/7.5\r\n"),
-		("Date",          "Date: "+HTTPCurrentDate()+"\r\n"),
-		("Type",          "Content-Type: text/html\r\n"),
-		("WWWAuth",       "Proxy-Authenticate: NTLM "),
-		("Payload",       ""),
-		("Payload-CRLF",  "\r\n"),
-		("Len",           "Content-Length: 0\r\n"),
-		("CRLF",          "\r\n"),
-	])
+    fields = OrderedDict([
+        ("Code",          "HTTP/1.1 407 Unauthorized\r\n"),
+        ("ServerType",    "Server: Microsoft-IIS/7.5\r\n"),
+        ("Date",          "Date: "+HTTPCurrentDate()+"\r\n"),
+        ("Type",          "Content-Type: text/html\r\n"),
+        ("WWWAuth",       "Proxy-Authenticate: NTLM "),
+        ("Payload",       ""),
+        ("Payload-CRLF",  "\r\n"),
+        ("Len",           "Content-Length: 0\r\n"),
+        ("CRLF",          "\r\n"),
+    ])
 
-	def calculate(self,payload):
-		self.fields["Payload"] = b64encode(payload)
+    def calculate(self,payload):
+        self.fields["Payload"] = b64encode(payload)
 
 #401 section:
 class IIS_Auth_401_Ans(Packet):
-	fields = OrderedDict([
-		("Code",          "HTTP/1.1 401 Unauthorized\r\n"),
-		("ServerType",    "Server: Microsoft-IIS/7.5\r\n"),
-		("Date",          "Date: "+HTTPCurrentDate()+"\r\n"),
-		("Type",          "Content-Type: text/html\r\n"),
-		("WWW-Auth",      "WWW-Authenticate: NTLM\r\n"),
-		("Len",           "Content-Length: 0\r\n"),
-		("CRLF",          "\r\n"),
-	])
+    fields = OrderedDict([
+        ("Code",          "HTTP/1.1 401 Unauthorized\r\n"),
+        ("ServerType",    "Server: Microsoft-IIS/7.5\r\n"),
+        ("Date",          "Date: "+HTTPCurrentDate()+"\r\n"),
+        ("Type",          "Content-Type: text/html\r\n"),
+        ("WWW-Auth",      "WWW-Authenticate: NTLM\r\n"),
+        ("Len",           "Content-Length: 0\r\n"),
+        ("CRLF",          "\r\n"),
+    ])
 
 class IIS_Auth_Granted(Packet):
-	fields = OrderedDict([
-		("Code",          "HTTP/1.1 200 OK\r\n"),
-		("ServerType",    "Server: Microsoft-IIS/7.5\r\n"),
-		("Date",          "Date: "+HTTPCurrentDate()+"\r\n"),
-		("Type",          "Content-Type: text/html\r\n"),
-		("WWW-Auth",      "WWW-Authenticate: NTLM\r\n"),
-		("ContentLen",    "Content-Length: "),
-		("ActualLen",     "76"),
-		("CRLF",          "\r\n\r\n"),
-		("Payload",       "<html>\n<head>\n</head>\n<body>\n<img src='file:\\\\\\\\\\\\shar\\smileyd.ico' alt='Loading' height='1' width='2'>\n</body>\n</html>\n"),
-	])
-	def calculate(self):
-		self.fields["ActualLen"] = len(str(self.fields["Payload"]))
+    fields = OrderedDict([
+        ("Code",          "HTTP/1.1 200 OK\r\n"),
+        ("ServerType",    "Server: Microsoft-IIS/7.5\r\n"),
+        ("Date",          "Date: "+HTTPCurrentDate()+"\r\n"),
+        ("Type",          "Content-Type: text/html\r\n"),
+        ("WWW-Auth",      "WWW-Authenticate: NTLM\r\n"),
+        ("ContentLen",    "Content-Length: "),
+        ("ActualLen",     "76"),
+        ("CRLF",          "\r\n\r\n"),
+        ("Payload",       "<html>\n<head>\n</head>\n<body>\n<img src='file:\\\\\\\\\\\\shar\\smileyd.ico' alt='Loading' height='1' width='2'>\n</body>\n</html>\n"),
+    ])
+    def calculate(self):
+        self.fields["ActualLen"] = len(str(self.fields["Payload"]))
 
 class IIS_NTLM_Challenge_Ans(Packet):
-	fields = OrderedDict([
-		("Code",          "HTTP/1.1 401 Unauthorized\r\n"),
-		("ServerType",    "Server: Microsoft-IIS/7.5\r\n"),
-		("Date",          "Date: "+HTTPCurrentDate()+"\r\n"),
-		("Type",          "Content-Type: text/html\r\n"),
-		("WWWAuth",       "WWW-Authenticate: NTLM "),
-		("Payload",       ""),
-		("Payload-CRLF",  "\r\n"),
-		("Len",           "Content-Length: 0\r\n"),
-		("CRLF",          "\r\n"),
-	])
+    fields = OrderedDict([
+        ("Code",          "HTTP/1.1 401 Unauthorized\r\n"),
+        ("ServerType",    "Server: Microsoft-IIS/7.5\r\n"),
+        ("Date",          "Date: "+HTTPCurrentDate()+"\r\n"),
+        ("Type",          "Content-Type: text/html\r\n"),
+        ("WWWAuth",       "WWW-Authenticate: NTLM "),
+        ("Payload",       ""),
+        ("Payload-CRLF",  "\r\n"),
+        ("Len",           "Content-Length: 0\r\n"),
+        ("CRLF",          "\r\n"),
+    ])
 
-	def calculate(self,payload):
-		self.fields["Payload"] = b64encode(payload)
+    def calculate(self,payload):
+        self.fields["Payload"] = b64encode(payload)
 
 class IIS_Basic_401_Ans(Packet):
-	fields = OrderedDict([
-		("Code",          "HTTP/1.1 401 Unauthorized\r\n"),
-		("ServerType",    "Server: Microsoft-IIS/7.5\r\n"),
-		("Date",          "Date: "+HTTPCurrentDate()+"\r\n"),
-		("Type",          "Content-Type: text/html\r\n"),
-		("WWW-Auth",      "WWW-Authenticate: Basic realm=\"Authentication Required\"\r\n"),
-		("AllowOrigin",   "Access-Control-Allow-Origin: *\r\n"),
-		("AllowCreds",    "Access-Control-Allow-Credentials: true\r\n"),
-		("Len",           "Content-Length: 0\r\n"),
-		("CRLF",          "\r\n"),
-	])
+    fields = OrderedDict([
+        ("Code",          "HTTP/1.1 401 Unauthorized\r\n"),
+        ("ServerType",    "Server: Microsoft-IIS/7.5\r\n"),
+        ("Date",          "Date: "+HTTPCurrentDate()+"\r\n"),
+        ("Type",          "Content-Type: text/html\r\n"),
+        ("WWW-Auth",      "WWW-Authenticate: Basic realm=\"Authentication Required\"\r\n"),
+        ("AllowOrigin",   "Access-Control-Allow-Origin: *\r\n"),
+        ("AllowCreds",    "Access-Control-Allow-Credentials: true\r\n"),
+        ("Len",           "Content-Length: 0\r\n"),
+        ("CRLF",          "\r\n"),
+    ])
 
 ##################WEBDAV Relay Packet#########################
 class WEBDAV_Options_Answer(Packet):
-	fields = OrderedDict([
-		("Code",          "HTTP/1.1 200 OK\r\n"),
-		("Date",          "Date: "+HTTPCurrentDate()+"\r\n"),
-		("ServerType",    "Server: Microsoft-IIS/7.5\r\n"),
-		("Allow",         "Allow: GET,HEAD,POST,OPTIONS,TRACE\r\n"),
-		("Len",           "Content-Length: 0\r\n"),
-		("Keep-Alive:", "Keep-Alive: timeout=5, max=100\r\n"),
-		("Connection",    "Connection: Keep-Alive\r\n"),
-		("Content-Type",  "Content-Type: text/html\r\n"),
-		("CRLF",          "\r\n"),
-	])
+    fields = OrderedDict([
+        ("Code",          "HTTP/1.1 200 OK\r\n"),
+        ("Date",          "Date: "+HTTPCurrentDate()+"\r\n"),
+        ("ServerType",    "Server: Microsoft-IIS/7.5\r\n"),
+        ("Allow",         "Allow: GET,HEAD,POST,OPTIONS,TRACE\r\n"),
+        ("Len",           "Content-Length: 0\r\n"),
+        ("Keep-Alive:", "Keep-Alive: timeout=5, max=100\r\n"),
+        ("Connection",    "Connection: Keep-Alive\r\n"),
+        ("Content-Type",  "Content-Type: text/html\r\n"),
+        ("CRLF",          "\r\n"),
+    ])
 
 ##################SMB Relay Packet############################
 def midcalc(data):  #Set MID SMB Header field.
@@ -160,60 +160,60 @@ def tidcalc(data):  #Set TID SMB Header field.
 
 #Response packet.
 class SMBRelayNegoAns(Packet):
-	fields = OrderedDict([
-		("Wordcount",                 "\x11"),
-		("Dialect",                   ""),
-		("Securitymode",              "\x03"),
-		("MaxMpx",                    "\x32\x00"),
-		("MaxVc",                     "\x01\x00"),
-		("MaxBuffSize",               "\x04\x41\x00\x00"),
-		("MaxRawBuff",                "\x00\x00\x01\x00"),
-		("SessionKey",                "\x00\x00\x00\x00"),
-		("Capabilities",              "\xfd\xf3\x01\x80"),
-		("SystemTime",                "\x84\xd6\xfb\xa3\x01\x35\xcd\x01"),
-		("SrvTimeZone",               "\xf0\x00"),
-		("KeyLen",                    "\x00"),
-		("Bcc",                       "\x10\x00"),
-		("Guid",                      os.urandom(16)),
-	])
+    fields = OrderedDict([
+        ("Wordcount",                 "\x11"),
+        ("Dialect",                   ""),
+        ("Securitymode",              "\x03"),
+        ("MaxMpx",                    "\x32\x00"),
+        ("MaxVc",                     "\x01\x00"),
+        ("MaxBuffSize",               "\x04\x41\x00\x00"),
+        ("MaxRawBuff",                "\x00\x00\x01\x00"),
+        ("SessionKey",                "\x00\x00\x00\x00"),
+        ("Capabilities",              "\xfd\xf3\x01\x80"),
+        ("SystemTime",                "\x84\xd6\xfb\xa3\x01\x35\xcd\x01"),
+        ("SrvTimeZone",               "\xf0\x00"),
+        ("KeyLen",                    "\x00"),
+        ("Bcc",                       "\x10\x00"),
+        ("Guid",                      os.urandom(16)),
+    ])
 
 ##Response packet.
 class SMBRelayNTLMAnswer(Packet):
-	fields = OrderedDict([
-		("Wordcount",             "\x04"),
-		("AndXCommand",           "\xff"),
-		("Reserved",              "\x00"),
-		("Andxoffset",            "\x5f\x01"),
-		("Action",                "\x00\x00"),
-		("SecBlobLen",            "\xea\x00"),
-		("Bcc",                   "\x34\x01"),
+    fields = OrderedDict([
+        ("Wordcount",             "\x04"),
+        ("AndXCommand",           "\xff"),
+        ("Reserved",              "\x00"),
+        ("Andxoffset",            "\x5f\x01"),
+        ("Action",                "\x00\x00"),
+        ("SecBlobLen",            "\xea\x00"),
+        ("Bcc",                   "\x34\x01"),
                 ###NTLMPACKET
-		("Data",                  ""),
+        ("Data",                  ""),
                 ###NTLMPACKET
 
-	])
+    ])
 
 
 #Request packet (no calc):
 class SMBSessionSetupAndxRequest(Packet):
-	fields = OrderedDict([
-		("Wordcount", "\x0c"),
-        	("AndXCommand", "\xff"),
-        	("Reserved","\x00" ),
-       	        ("AndXOffset", "\xec\x00"),              
-        	("MaxBuff","\xff\xff"),
-        	("MaxMPX", "\x32\x00"),
-        	("VCNumber","\x00\x00"),
-        	("SessionKey", "\x00\x00\x00\x00"),
+    fields = OrderedDict([
+        ("Wordcount", "\x0c"),
+            ("AndXCommand", "\xff"),
+            ("Reserved","\x00" ),
+                   ("AndXOffset", "\xec\x00"),              
+            ("MaxBuff","\xff\xff"),
+            ("MaxMPX", "\x32\x00"),
+            ("VCNumber","\x00\x00"),
+            ("SessionKey", "\x00\x00\x00\x00"),
                 ###NTLMPACKET
-		("Data",                  ""),
+        ("Data",                  ""),
                 ###NTLMPACKET
-	])
+    ])
 
 class SMBSessEmpty(Packet):
-	fields = OrderedDict([
-		("Empty",       "\x00\x00\x00"),
-	])
+    fields = OrderedDict([
+        ("Empty",       "\x00\x00\x00"),
+    ])
 ##################SMB Request Packet##########################
 class SMBHeader(Packet):
     fields = OrderedDict([
@@ -388,34 +388,34 @@ class SMBSessionSetupAndxAUTH(Packet):
         SecurityBlobLen = str(self.fields["ApplicationHeaderTag"])+str(self.fields["ApplicationHeaderTagLenOfLen"])+str(self.fields["ApplicationHeaderLen"])+str(self.fields["AsnSecMechType"])+str(self.fields["AsnSecMechLenOfLen"])+str(self.fields["AsnSecMechLen"])+str(self.fields["ChoosedTag"])+str(self.fields["ChoosedTagLenOfLen"])+str(self.fields["ChoosedTagLen"])+str(self.fields["ChoosedTag1"])+str(self.fields["ChoosedTag1StrLenOfLen"])+str(self.fields["ChoosedTag1StrLen"])+str(self.fields["Data"])
 
         NTLMData = str(self.fields["Data"])
-	###### ASN Stuff
+    ###### ASN Stuff
         if len(NTLMData) > 255:
-	   self.fields["ApplicationHeaderTagLenOfLen"] = "\x82"
-	   self.fields["ApplicationHeaderLen"] = struct.pack(">H", len(SecurityBlobLen)-0)
+            self.fields["ApplicationHeaderTagLenOfLen"] = "\x82"
+            self.fields["ApplicationHeaderLen"] = struct.pack(">H", len(SecurityBlobLen)-0)
         else:
-           self.fields["ApplicationHeaderTagLenOfLen"] = "\x81"
-	   self.fields["ApplicationHeaderLen"] = struct.pack(">B", len(SecurityBlobLen)-3)
+            self.fields["ApplicationHeaderTagLenOfLen"] = "\x81"
+            self.fields["ApplicationHeaderLen"] = struct.pack(">B", len(SecurityBlobLen)-3)
 
         if len(NTLMData)-8 > 255:
-           self.fields["AsnSecMechLenOfLen"] = "\x82"
-	   self.fields["AsnSecMechLen"] = struct.pack(">H", len(SecurityBlobLen)-4)
+            self.fields["AsnSecMechLenOfLen"] = "\x82"
+            self.fields["AsnSecMechLen"] = struct.pack(">H", len(SecurityBlobLen)-4)
         else:
-           self.fields["AsnSecMechLenOfLen"] = "\x81"
-	   self.fields["AsnSecMechLen"] = struct.pack(">B", len(SecurityBlobLen)-6)
+            self.fields["AsnSecMechLenOfLen"] = "\x81"
+            self.fields["AsnSecMechLen"] = struct.pack(">B", len(SecurityBlobLen)-6)
 
         if len(NTLMData)-12 > 255:
-           self.fields["ChoosedTagLenOfLen"] = "\x82"
-           self.fields["ChoosedTagLen"] = struct.pack(">H", len(SecurityBlobLen)-8) 
+            self.fields["ChoosedTagLenOfLen"] = "\x82"
+            self.fields["ChoosedTagLen"] = struct.pack(">H", len(SecurityBlobLen)-8) 
         else:
-           self.fields["ChoosedTagLenOfLen"] = "\x81"
-           self.fields["ChoosedTagLen"] = struct.pack(">B", len(SecurityBlobLen)-9)
+            self.fields["ChoosedTagLenOfLen"] = "\x81"
+            self.fields["ChoosedTagLen"] = struct.pack(">B", len(SecurityBlobLen)-9)
 
         if len(NTLMData)-16 > 255:
-           self.fields["ChoosedTag1StrLenOfLen"] = "\x82"
-           self.fields["ChoosedTag1StrLen"] = struct.pack(">H", len(SecurityBlobLen)-12)
+            self.fields["ChoosedTag1StrLenOfLen"] = "\x82"
+            self.fields["ChoosedTag1StrLen"] = struct.pack(">H", len(SecurityBlobLen)-12)
         else:
-           self.fields["ChoosedTag1StrLenOfLen"] = "\x81"
-           self.fields["ChoosedTag1StrLen"] = struct.pack(">B", len(SecurityBlobLen)-12)
+            self.fields["ChoosedTag1StrLenOfLen"] = "\x81"
+            self.fields["ChoosedTag1StrLen"] = struct.pack(">B", len(SecurityBlobLen)-12)
 
         CompletePacketLen = str(self.fields["wordcount"])+str(self.fields["AndXCommand"])+str(self.fields["reserved"])+str(self.fields["andxoffset"])+str(self.fields["maxbuff"])+str(self.fields["maxmpx"])+str(self.fields["vcnum"])+str(self.fields["sessionkey"])+str(self.fields["securitybloblength"])+str(self.fields["reserved2"])+str(self.fields["capabilities"])+str(self.fields["bcc1"])+str(self.fields["ApplicationHeaderTag"])+str(self.fields["ApplicationHeaderTagLenOfLen"])+str(self.fields["ApplicationHeaderLen"])+str(self.fields["AsnSecMechType"])+str(self.fields["AsnSecMechLenOfLen"])+str(self.fields["AsnSecMechLen"])+str(self.fields["ChoosedTag"])+str(self.fields["ChoosedTagLenOfLen"])+str(self.fields["ChoosedTagLen"])+str(self.fields["ChoosedTag1"])+str(self.fields["ChoosedTag1StrLenOfLen"])+str(self.fields["ChoosedTag1StrLen"])+str(self.fields["Data"])+str(self.fields["NLMPAuthMsgNull"])+str(self.fields["NativeOs"])+str(self.fields["NativeOsTerminator"])+str(self.fields["ExtraNull"])+str(self.fields["NativeLan"])+str(self.fields["NativeLanTerminator"])
 
